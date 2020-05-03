@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
         color: colors.accent,
         fontSize: 27,
         marginVertical: 20,
+        fontFamily: 'open-sans-bold',
     },
     inputContainer: {
         width: 300,
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     input: {
         width: 100,
         textAlign: 'center',
+        fontSize: 20,
     },
     summary: {
         marginTop: 20,
