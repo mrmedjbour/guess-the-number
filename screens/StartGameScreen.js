@@ -16,6 +16,7 @@ const StartGameScreen = props => {
 
     const resetInputHandler = () => {
         setValue('');
+        setConfirmed(false);
     };
 
     const confirmInputHandler = () => {
@@ -27,6 +28,7 @@ const StartGameScreen = props => {
         setConfirmed(true);
         setSelectedNum(chosenNumber);
         setValue('');
+        Keyboard.dismiss();
     };
 
     let confirmOutput;
@@ -36,7 +38,7 @@ const StartGameScreen = props => {
             <Card style={styles.summary}>
                 <Text>Chosen Number</Text>
                 <NumberContainer>{selectedNum}</NumberContainer>
-                <Button title={'START GAME'}/>
+                <Button title={'START GAME'} onPress={() => props.onStartGame(selectedNum)}/>
             </Card>
         );
     }
@@ -46,7 +48,7 @@ const StartGameScreen = props => {
             Keyboard.dismiss();
         }}>
             <View style={styles.screen}>
-                <Text>Start New Game!</Text>
+                <Text style={styles.walcome}>Start New Game!</Text>
                 <Card style={styles.inputContainer}>
                     <Text style={styles.title}>Select a Number</Text>
                     <Input keyboardType={'number-pad'} maxLength={2} autoCorrect={false} autoCapitalize={'none'} blurOnSubmit onChangeText={numberInputHandler} value={value} style={styles.input}/>
@@ -66,6 +68,11 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         alignItems: 'center',
+    },
+    walcome: {
+        color: colors.accent,
+        fontSize: 27,
+        marginVertical: 20,
     },
     inputContainer: {
         width: 300,
@@ -92,6 +99,7 @@ const styles = StyleSheet.create({
     },
     summary: {
         marginTop: 20,
+        alignItems: 'center',
 
     },
 });
