@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, Alert} from 'react-native';
+import {View, Text, StyleSheet, Button, Alert, FlatList} from 'react-native';
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
 
@@ -14,9 +14,17 @@ const genRandNumBetween = (min, max, exclude) => {
     }
 };
 
+const renderListItem = (listLength, itemData) => (
+    <View style={styles.list}>
+        <Text style={styles.listText}>#{listLength - itemData.index} : </Text>
+        <Text style={styles.listText}>{itemData.item}</Text>
+    </View>
+);
+
 const GameScreen = props => {
-    const [currentGuess, setCurrentGuess] = useState(genRandNumBetween(1, 100, props.userChoice));
-    const [rounds,setRounds] = useState(0);
+    const initialGuess = genRandNumBetween(1, 100, props.userChoice);
+    const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [pastGuesses,setPastGuesses] = useState([initialGuess.toString()]);
     const currentMin = useRef(1);
     const currentMax = useRef(100);
 
@@ -24,7 +32,7 @@ const GameScreen = props => {
 
     useEffect(() => {
         if (currentGuess === userChoice) {
-            onGameOver(rounds);
+            onGameOver(pastGuesses.length);
         }
     }, [currentGuess, userChoice, onGameOver]);
 
@@ -36,11 +44,11 @@ const GameScreen = props => {
         if (direction === 'lower') {
             currentMax.current = currentGuess;
         } else {
-            currentMin.current = currentGuess;
+            currentMin.current = currentGuess + 1;
         }
         const nextNumber = genRandNumBetween(currentMin.current, currentMax.current, currentGuess);
         setCurrentGuess(nextNumber);
-        setRounds(curRounds => curRounds + 1);
+        setPastGuesses(curPastGuesses => [nextNumber.toString(), ...curPastGuesses]);
     };
 
     return (
@@ -51,6 +59,9 @@ const GameScreen = props => {
                 <Button onPress={nextGuessHandler.bind(this, 'lower')} title={'LOWER'}/>
                 <Button onPress={nextGuessHandler.bind(this, 'greater')} title={'GREATER'}/>
             </Card>
+            <View style={styles.listview}>
+                <FlatList keyExtractor={(item) => item} data={pastGuesses} renderItem={renderListItem.bind(this, pastGuesses.length)} />
+            </View>
         </View>
     );
 };
@@ -68,7 +79,24 @@ const styles = StyleSheet.create({
         width: 300,
         maxWidth: '80%',
     },
-
+    listview: {
+        marginTop: 20,
+        flex: 1,
+        width: '50%',
+    },
+    list: {
+        borderColor: '#ccc',
+        borderWidth: 2,
+        borderRadius: 12,
+        padding: 10,
+        marginVertical: 5,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    listText: {
+        fontSize: 15,
+    },
 });
 
 export default GameScreen;
