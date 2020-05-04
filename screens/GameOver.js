@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet, Image} from 'react-native';
+import {View, Text, Button, StyleSheet, Image, Dimensions} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from "../components/colors";
 
@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     imageConatiner: {
-        width: 250,
-        height: 250,
-        borderRadius: 125,
+        width: Dimensions.get('window').width * 0.7,
+        height: Dimensions.get('window').width * 0.7,
+        borderRadius: Dimensions.get('window').width * 0.7 / 2,
         borderWidth: 3,
         borderColor: 'black',
         overflow: 'hidden',
-        marginVertical: 25,
+        marginVertical: Dimensions.get('window').height / 30,
     },
     image: {
         width: '100%',
