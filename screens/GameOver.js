@@ -1,18 +1,20 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, Text, Button, StyleSheet, Image, Dimensions, ScrollView} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from "../components/colors";
 
 const GameOver = props => {
     return (
-        <View style={styles.screen}>
-            <Text style={styles.title}>The Game Is Over <FontAwesome name={'exclamation'} size={18} color={'black'}/> </Text>
-            <View style={styles.imageConatiner}>
-                <Image source={require('../assets/game-over.png')} style={styles.image} resizeMode={'cover'}/>
+        <ScrollView>
+            <View style={styles.screen}>
+                <Text style={styles.title}>The Game Is Over <FontAwesome name={'exclamation'} size={18} color={'black'}/> </Text>
+                <View style={styles.imageConatiner}>
+                    <Image source={require('../assets/game-over.png')} style={styles.image} resizeMode={'cover'}/>
+                </View>
+                <Text style={styles.textSummry}>Your phone needed <Text style={styles.highlight}>{props.roundsNumber}</Text> rounds to guess the number <Text style={styles.highlight}>{props.userNumber}</Text></Text>
+                <Button onPress={props.onRestart} title={'Start New Game'} color={colors.accent} />
             </View>
-            <Text style={styles.textSummry}>Your phone needed <Text style={styles.highlight}>{props.roundsNumber}</Text> rounds to guess the number <Text style={styles.highlight}>{props.userNumber}</Text></Text>
-            <Button onPress={props.onRestart} title={'Start New Game'} color={colors.accent} />
-        </View>
+        </ScrollView>
     );
 };
 
