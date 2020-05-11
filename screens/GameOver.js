@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        marginVertical: Dimensions.get('window').height / 15,
     },
     title: {
         fontFamily: 'open-sans-bold',
@@ -37,9 +38,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     imageConatiner: {
-        width: Dimensions.get('window').width * 0.7,
-        height: Dimensions.get('window').width * 0.7,
-        borderRadius: Dimensions.get('window').width * 0.7 / 2,
+        width: Dimensions.get('window').width > 500 ? Dimensions.get('window').width * 0.4 : Dimensions.get('window').width * 0.7,
+        height: Dimensions.get('window').width > 500 ? Dimensions.get('window').width * 0.4 : Dimensions.get('window').width * 0.7,
+        borderRadius: Dimensions.get('window').width > 500 ? Dimensions.get('window').width * 0.4 / 2 : Dimensions.get('window').width * 0.7 / 2,
         borderWidth: 3,
         borderColor: 'black',
         overflow: 'hidden',

@@ -25,10 +25,22 @@ const GameScreen = props => {
     const initialGuess = genRandNumBetween(1, 100, props.userChoice);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
     const [pastGuesses,setPastGuesses] = useState([initialGuess.toString()]);
+    const [devHeight, setdevHeight] = useState(Dimensions.get('window').height);
     const currentMin = useRef(1);
     const currentMax = useRef(100);
 
     const {userChoice, onGameOver} = props;
+
+    useEffect(() => {
+        const updateDevHeight = () => {
+            setdevHeight(Dimensions.get('window').height);
+        };
+        Dimensions.addEventListener('change', updateDevHeight);
+
+        return () => {
+            Dimensions.removeEventListener('change', updateDevHeight)
+        };
+    });
 
     useEffect(() => {
         if (currentGuess === userChoice) {
@@ -50,6 +62,22 @@ const GameScreen = props => {
         setCurrentGuess(nextNumber);
         setPastGuesses(curPastGuesses => [nextNumber.toString(), ...curPastGuesses]);
     };
+
+    if (devHeight < 500){
+        return (
+            <View style={styles.screen}>
+                <Text>Opponent's Guess</Text>
+                <Card style={styles.btnContainer}>
+                    <Button onPress={nextGuessHandler.bind(this, 'lower')} title={'LOWER'}/>
+                    <NumberContainer>{currentGuess}</NumberContainer>
+                    <Button onPress={nextGuessHandler.bind(this, 'greater')} title={'GREATER'}/>
+                </Card>
+                <View style={styles.listview}>
+                    <FlatList keyExtractor={(item) => item} data={pastGuesses} renderItem={renderListItem.bind(this, pastGuesses.length)} />
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.screen}>
@@ -75,6 +103,7 @@ const styles = StyleSheet.create({
     btnContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
         // marginTop: 20,
         marginTop: Dimensions.get('window').height > 600 ? 20 : 10,
         width: 300,
